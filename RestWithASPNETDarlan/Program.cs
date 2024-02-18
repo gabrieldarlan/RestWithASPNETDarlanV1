@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using RestWithASPNETDarlan.Model.Context;
 using RestWithASPNETDarlan.Services;
 using RestWithASPNETDarlan.Services.Implementation;
 
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
+builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(connection, new MySqlServerVersion(new Version(8, 0, 31))));
 
 // Injecao de dependencia
 builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
