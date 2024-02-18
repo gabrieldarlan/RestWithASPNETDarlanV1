@@ -1,8 +1,8 @@
 ﻿using RestWithASPNETDarlan.Model;
 
-namespace RestWithASPNETDarlan.Services
+namespace RestWithASPNETDarlan.Repository
 {
-    public interface IPersonService
+    public interface IPersonRepository
     {
         Person Create(Person person);
         Person Update(Person person);

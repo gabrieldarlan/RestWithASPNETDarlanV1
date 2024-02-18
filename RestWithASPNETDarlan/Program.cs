@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using RestWithASPNETDarlan.Model.Context;
-using RestWithASPNETDarlan.Services;
-using RestWithASPNETDarlan.Services.Implementation;
+using RestWithASPNETDarlan.Business;
+using RestWithASPNETDarlan.Business.Implementation;
+using RestWithASPNETDarlan.Repository;
+using RestWithASPNETDarlan.Repository.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,8 @@ builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(connecti
 builder.Services.AddApiVersioning();
 
 // Injecao de dependencia
-builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
+builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
 var app = builder.Build();
 

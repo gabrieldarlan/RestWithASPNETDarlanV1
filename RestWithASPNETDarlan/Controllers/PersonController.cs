@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETDarlan.Model;
-using RestWithASPNETDarlan.Services;
+using RestWithASPNETDarlan.Business;
 
 namespace RestWithASPNETDarlan.Controllers
 {
@@ -11,26 +11,26 @@ namespace RestWithASPNETDarlan.Controllers
     public class PersonController : ControllerBase
     {
         private readonly ILogger<PersonController> _logger;
-        private readonly IPersonService _personService;
+        private readonly IPersonBusiness _personBusiness;
 
-        public PersonController(ILogger<PersonController> logger, IPersonService personService)
+        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
-            _personService = personService;
+            _personBusiness = personBusiness;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
 
-            return Ok(_personService.FindAll());
+            return Ok(_personBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
 
-            Person person = _personService.FindById(id);
+            Person person = _personBusiness.FindById(id);
             if (person==null)
             {
                 return NotFound();
@@ -46,7 +46,7 @@ namespace RestWithASPNETDarlan.Controllers
                 return BadRequest();
             }
 
-            return Ok(_personService.Create(person));
+            return Ok(_personBusiness.Create(person));
             
         }
 
@@ -58,14 +58,14 @@ namespace RestWithASPNETDarlan.Controllers
                 return BadRequest();
             }
 
-            return Ok(_personService.Update(person));
+            return Ok(_personBusiness.Update(person));
 
         }
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
 
-            _personService.Delete(id);
+            _personBusiness.Delete(id);
           
             return base.NoContent();
         }

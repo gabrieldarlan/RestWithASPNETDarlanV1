@@ -2,13 +2,13 @@
 using RestWithASPNETDarlan.Model.Context;
 using System;
 
-namespace RestWithASPNETDarlan.Services.Implementation
+namespace RestWithASPNETDarlan.Repository.Implementation
 {
-    public class PersonServiceImplementation : IPersonService
+    public class PersonRepositoryImplementation : IPersonRepository
     {
         private readonly MySQLContext _context;
 
-        public PersonServiceImplementation(MySQLContext context)
+        public PersonRepositoryImplementation(MySQLContext context)
         {
             _context = context;
         }
