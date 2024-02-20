@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="db\migrations\" />
     <Folder Include="Infra\" />
+    <Folder Include="Repository\Implementation\" />
   </ItemGroup>
 
   <ItemGroup>

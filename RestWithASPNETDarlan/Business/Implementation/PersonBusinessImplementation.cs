@@ -1,15 +1,16 @@
 ﻿using RestWithASPNETDarlan.Model;
 using RestWithASPNETDarlan.Model.Context;
 using RestWithASPNETDarlan.Repository;
+using RestWithASPNETDarlan.Repository.Generic;
 using System;
 
 namespace RestWithASPNETDarlan.Business.Implementation
 {
     public class PersonBusinessImplementation : IPersonBusiness
     {
-        private readonly IPersonRepository _repository;
+        private readonly IRepository<Person> _repository;
 
-        public PersonBusinessImplementation(IPersonRepository repository)
+        public PersonBusinessImplementation(IRepository<Person> repository)
         {
             _repository = repository;
         }

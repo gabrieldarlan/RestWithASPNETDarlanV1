@@ -1,12 +1,11 @@
+using EvolveDb;
 using Microsoft.EntityFrameworkCore;
-using RestWithASPNETDarlan.Model.Context;
+using MySqlConnector;
 using RestWithASPNETDarlan.Business;
 using RestWithASPNETDarlan.Business.Implementation;
-using RestWithASPNETDarlan.Repository;
-using RestWithASPNETDarlan.Repository.Implementation;
-using MySqlConnector;
+using RestWithASPNETDarlan.Model.Context;
+using RestWithASPNETDarlan.Repository.Generic;
 using Serilog;
-using EvolveDb;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,10 +26,8 @@ builder.Services.AddApiVersioning();
 
 // Injecao de dependencia
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
-
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
-builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 

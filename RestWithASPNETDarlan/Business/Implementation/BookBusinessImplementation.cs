@@ -1,14 +1,14 @@
 ﻿using RestWithASPNETDarlan.Model;
-using RestWithASPNETDarlan.Repository;
+using RestWithASPNETDarlan.Repository.Generic;
 
 namespace RestWithASPNETDarlan.Business.Implementation
 {
     public class BookBusinessImplementation : IBookBusiness
     {
 
-        private readonly IBookRepository _repository;
+        private readonly IRepository<Book> _repository;
 
-        public BookBusinessImplementation(IBookRepository repository)
+        public BookBusinessImplementation(IRepository<Book> repository)
         {
             _repository = repository;
         }
