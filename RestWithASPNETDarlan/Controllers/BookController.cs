@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETDarlan.Business;
+using RestWithASPNETDarlan.Data.VO;
 using RestWithASPNETDarlan.Model;
 
 namespace RestWithASPNETDarlan.Controllers
@@ -29,7 +30,7 @@ namespace RestWithASPNETDarlan.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            Book book = _bookBusiness.FindById(id);
+            BookVO book = _bookBusiness.FindById(id);
             if (book == null)
             {
                 return NotFound();
@@ -38,7 +39,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Book book)
+        public IActionResult Post([FromBody] BookVO book)
         {
             if (book == null) return BadRequest();
 
@@ -46,7 +47,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Book book)
+        public IActionResult Put([FromBody] BookVO book)
         {
             if (book == null) return BadRequest();
             return Ok(_bookBusiness.Update(book));

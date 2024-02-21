@@ -1,4 +1,6 @@
-﻿using RestWithASPNETDarlan.Model;
+﻿using RestWithASPNETDarlan.Data.Converter.Implementations;
+using RestWithASPNETDarlan.Data.VO;
+using RestWithASPNETDarlan.Model;
 using RestWithASPNETDarlan.Repository.Generic;
 
 namespace RestWithASPNETDarlan.Business.Implementation
@@ -7,25 +9,36 @@ namespace RestWithASPNETDarlan.Business.Implementation
     {
 
         private readonly IRepository<Book> _repository;
+        private readonly BookConverter _converter;
 
         public BookBusinessImplementation(IRepository<Book> repository)
         {
             _repository = repository;
+            _converter = new BookConverter();
         }
 
-        public List<Book> FindAll()
+        public List<BookVO> FindAll()
         {
-            return _repository.FindAll();
+            return _converter.Parse(_repository.FindAll());
         }
 
-        public Book FindById(long id)
+        public BookVO FindById(long id)
         {
-            return _repository.FindById(id);
+            return _converter.Parse(_repository.FindById(id));
         }
 
-        public Book Create(Book book)
+        public BookVO Create(BookVO book)
         {
-            return _repository.Create(book);
+            Book bookEntity = _converter.Parse(book);
+            bookEntity = _repository.Create(bookEntity);
+            return _converter.Parse(bookEntity);
+        }
+
+        public BookVO Update(BookVO book)
+        {
+            Book bookEntity = _converter.Parse(book);
+            bookEntity = _repository.Update(bookEntity);
+            return _converter.Parse(bookEntity);
         }
 
         public void Delete(long id)
@@ -33,9 +46,5 @@ namespace RestWithASPNETDarlan.Business.Implementation
             _repository.Delete(id);
         }
 
-        public Book Update(Book book)
-        {
-            return _repository.Update(book);
-        }
     }
 }

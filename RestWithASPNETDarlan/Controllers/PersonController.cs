@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETDarlan.Model;
 using RestWithASPNETDarlan.Business;
+using RestWithASPNETDarlan.Data.VO;
 
 namespace RestWithASPNETDarlan.Controllers
 {
@@ -30,7 +31,7 @@ namespace RestWithASPNETDarlan.Controllers
         public IActionResult Get(long id)
         {
 
-            Person person = _personBusiness.FindById(id);
+            PersonVO person = _personBusiness.FindById(id);
             if (person==null)
             {
                 return NotFound();
@@ -39,7 +40,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Person person)
+        public IActionResult Post([FromBody] PersonVO person)
         {
             if (person == null)
             {
@@ -51,7 +52,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Person person)
+        public IActionResult Put([FromBody] PersonVO person)
         {
             if (person == null)
             {
