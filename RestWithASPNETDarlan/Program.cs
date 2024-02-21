@@ -1,5 +1,6 @@
 using EvolveDb;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using MySqlConnector;
 using RestWithASPNETDarlan.Business;
 using RestWithASPNETDarlan.Business.Implementation;
@@ -21,8 +22,17 @@ if (builder.Environment.IsDevelopment())
     MigrateDatabase(connection);
 }
 
+builder.Services.AddMvc(op =>
+{
+    op.RespectBrowserAcceptHeader = true;
+    op.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+    op.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+}).AddXmlSerializerFormatters();
+
+
 // Versioning API
 builder.Services.AddApiVersioning();
+
 
 // Injecao de dependencia
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
