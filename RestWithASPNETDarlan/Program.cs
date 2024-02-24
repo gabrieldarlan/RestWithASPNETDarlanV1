@@ -20,6 +20,18 @@ var appDescription = $"REST API RESTfull developed in course '{appName}'";
 // Add services to the container.
 
 builder.Services.AddRouting(options=>options.LowercaseUrls = true);
+
+// Cors
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 
 var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
@@ -80,6 +92,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//Cors
+app.UseCors();
 
 //Swagger
 app.UseSwagger();
