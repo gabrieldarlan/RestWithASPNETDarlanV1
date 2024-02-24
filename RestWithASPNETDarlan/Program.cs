@@ -1,16 +1,22 @@
 using EvolveDb;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using RestWithASPNETDarlan.Business;
 using RestWithASPNETDarlan.Business.Implementation;
+using RestWithASPNETDarlan.Configurations;
 using RestWithASPNETDarlan.Hypermedias.Enricher;
 using RestWithASPNETDarlan.Hypermedias.Filters;
 using RestWithASPNETDarlan.Model.Context;
 using RestWithASPNETDarlan.Repository.Generic;
 using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var appName = "REST API's From 0 to Azure with ASP.NET Core 8 and Docker";
@@ -20,6 +26,44 @@ var appDescription = $"REST API RESTfull developed in course '{appName}'";
 // Add services to the container.
 
 builder.Services.AddRouting(options=>options.LowercaseUrls = true);
+
+// Token
+var tokenConfigurations = new TokenConfiguration();
+
+new ConfigureFromConfigurationOptions<TokenConfiguration>(
+        builder.Configuration.GetSection("TokenConfigurations")
+    )
+    .Configure(tokenConfigurations);
+
+builder.Services.AddSingleton(tokenConfigurations);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = tokenConfigurations.Issuer,
+        ValidAudience = tokenConfigurations.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+    };
+});
+
+builder.Services.AddAuthorization(auth =>
+{
+    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser().Build());
+});
+// Token
+
 
 // Cors
 builder.Services.AddCors(options =>
