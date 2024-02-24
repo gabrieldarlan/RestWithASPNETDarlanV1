@@ -1,8 +1,8 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using RestWithASPNETDarlan.Model;
 using RestWithASPNETDarlan.Business;
 using RestWithASPNETDarlan.Data.VO;
+using RestWithASPNETDarlan.Hypermedias.Filters;
 
 namespace RestWithASPNETDarlan.Controllers
 {
@@ -21,6 +21,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
 
@@ -28,6 +29,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpGet("{id}")]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
 
@@ -40,6 +42,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] PersonVO person)
         {
             if (person == null)
@@ -52,6 +55,7 @@ namespace RestWithASPNETDarlan.Controllers
         }
 
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] PersonVO person)
         {
             if (person == null)

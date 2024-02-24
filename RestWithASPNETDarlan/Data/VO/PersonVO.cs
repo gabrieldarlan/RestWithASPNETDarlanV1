@@ -1,8 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using RestWithASPNETDarlan.Hypermedias;
+using RestWithASPNETDarlan.Hypermedias.Abstract;
 
 namespace RestWithASPNETDarlan.Data.VO
 {
-    public class PersonVO
+    public class PersonVO : ISupportsHyperMedia
     {
         public long Id { get; set; }
 
@@ -13,5 +14,6 @@ namespace RestWithASPNETDarlan.Data.VO
         public string Address { get; set; }
 
         public string Gender { get; set; }
+        public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
     }
 }

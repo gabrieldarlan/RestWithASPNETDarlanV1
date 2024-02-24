@@ -4,6 +4,8 @@ using Microsoft.Net.Http.Headers;
 using MySqlConnector;
 using RestWithASPNETDarlan.Business;
 using RestWithASPNETDarlan.Business.Implementation;
+using RestWithASPNETDarlan.Hypermedias.Enricher;
+using RestWithASPNETDarlan.Hypermedias.Filters;
 using RestWithASPNETDarlan.Model.Context;
 using RestWithASPNETDarlan.Repository.Generic;
 using Serilog;
@@ -29,6 +31,12 @@ builder.Services.AddMvc(op =>
     op.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
 }).AddXmlSerializerFormatters();
 
+var filterOptions = new HyperMediaFilterOptions();
+filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
+
+builder.Services.AddSingleton(filterOptions);
+
 
 // Versioning API
 builder.Services.AddApiVersioning();
@@ -48,6 +56,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+//configuração do hateoas
+app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVersion}/{id?}");
 
 app.Run();
 
