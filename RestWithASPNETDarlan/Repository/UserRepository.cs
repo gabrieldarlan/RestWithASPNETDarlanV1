@@ -24,7 +24,7 @@ namespace RestWithASPNETDarlan.Repository
         }
 
 
-        public User? Update(User user)
+        public User? RefreshUserInfo(User user)
         {
             if (!_context.Users.Any(u => u.Id.Equals(user.Id))) return null;
 
@@ -46,6 +46,10 @@ namespace RestWithASPNETDarlan.Repository
             }
             return result;
         }
+        public User? ValidateCredentials(string userName)
+        {
+            return _context.Users.SingleOrDefault(u => u.Username == userName);
+        }
 
 
         private string ComputeHash(string input, HashAlgorithm algorithm)
@@ -63,5 +67,7 @@ namespace RestWithASPNETDarlan.Repository
 
             return builder.ToString();
         }
+
+
     }
 }

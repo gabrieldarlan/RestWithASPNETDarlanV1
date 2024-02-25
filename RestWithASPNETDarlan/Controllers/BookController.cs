@@ -1,14 +1,14 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETDarlan.Business;
 using RestWithASPNETDarlan.Data.VO;
 using RestWithASPNETDarlan.Hypermedias.Filters;
-using RestWithASPNETDarlan.Model;
 
 namespace RestWithASPNETDarlan.Controllers
 {
     [ApiVersion("1")]
+    [Authorize("Bearer")]
     [Route("api/[controller]/v{version:apiVersion}")]
     [ApiController]
     public class BookController : ControllerBase

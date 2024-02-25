@@ -14,7 +14,10 @@ using RestWithASPNETDarlan.Configurations;
 using RestWithASPNETDarlan.Hypermedias.Enricher;
 using RestWithASPNETDarlan.Hypermedias.Filters;
 using RestWithASPNETDarlan.Model.Context;
+using RestWithASPNETDarlan.Repository;
 using RestWithASPNETDarlan.Repository.Generic;
+using RestWithASPNETDarlan.Services;
+using RestWithASPNETDarlan.Services.Implementations;
 using Serilog;
 using System.Text;
 
@@ -25,7 +28,7 @@ var appDescription = $"REST API RESTfull developed in course '{appName}'";
 
 // Add services to the container.
 
-builder.Services.AddRouting(options=>options.LowercaseUrls = true);
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 // Token
 var tokenConfigurations = new TokenConfiguration();
@@ -125,6 +128,11 @@ builder.Services.AddSwaggerGen(c =>
 // Injecao de dependencia
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+builder.Services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+
+builder.Services.AddTransient<ITokenService, TokenService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();

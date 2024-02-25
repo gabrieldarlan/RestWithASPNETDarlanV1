@@ -6,7 +6,8 @@ namespace RestWithASPNETDarlan.Repository
     public interface IUserRepository
     {
         public User? ValidateCredentials(UserVO user);
-        public User? Update(User user);
+        public User? ValidateCredentials(string userName);
+        public User? RefreshUserInfo(User user);
 
     }
 }
