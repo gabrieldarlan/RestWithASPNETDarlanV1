@@ -92,5 +92,10 @@ namespace RestWithASPNETDarlan.Business.Implementation
                 );
 
         }
+
+        public bool RevokeToken(string userName)
+        {
+            return _userRepository.RevokeToken(userName);
+        }
     }
 }

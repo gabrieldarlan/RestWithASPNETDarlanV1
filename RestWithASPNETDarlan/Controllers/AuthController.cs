@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETDarlan.Business;
 using RestWithASPNETDarlan.Data.VO;
+using RestWithASPNETDarlan.Model;
 
 namespace RestWithASPNETDarlan.Controllers
 {
@@ -29,5 +31,31 @@ namespace RestWithASPNETDarlan.Controllers
             return Ok(token);
         }
 
+
+        [HttpPost]
+        [Route("refresh")]
+        public IActionResult Refresh([FromBody] TokenVO tokenVO)
+        {
+            if (tokenVO == null) return BadRequest("Invalid client request");
+            var token = _loginBusiness.ValidateCredentials(tokenVO);
+            if (token == null) return BadRequest("Invalid client request");
+
+            return Ok(token);
+        }
+
+
+
+        [HttpGet]
+        [Route("revoke")]
+        [Authorize("Bearer")]
+        public IActionResult Revoke()
+        {
+            string? userName = User.Identity.Name;
+            var result = _loginBusiness.RevokeToken(userName);
+
+            if (result == false ) return BadRequest("Invalid client request");
+
+            return NoContent();
+        }
     }
 }

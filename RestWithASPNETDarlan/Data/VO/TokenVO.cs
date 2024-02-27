@@ -2,13 +2,13 @@
 {
     public class TokenVO
     {
-        public bool Authenticaded { get; set; }
-        public string Created { get; set; } = string.Empty;
-        public string Expiration { get; set; } = string.Empty;
-        public string AccessToken { get; set; } = string.Empty;
-        public string RefreshToken { get; set; } = string.Empty;
+        public bool? Authenticaded { get; set; }
+        public string? Created { get; set; } 
+        public string? Expiration { get; set; } 
+        public string? AccessToken { get; set; } 
+        public string? RefreshToken { get; set; }
 
-        public TokenVO(bool authenticaded, string created, string expiration, string accessToken, string refreshToken)
+        public TokenVO(bool? authenticaded, string? created, string? expiration, string? accessToken, string? refreshToken)
         {
             Authenticaded = authenticaded;
             Created = created;

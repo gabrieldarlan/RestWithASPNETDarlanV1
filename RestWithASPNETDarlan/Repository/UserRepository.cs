@@ -16,15 +16,15 @@ namespace RestWithASPNETDarlan.Repository
             _context = context;
         }
 
-        public User? ValidateCredentials(UserVO user)
+        public User ValidateCredentials(UserVO user)
         {
 
             var pass = ComputeHash(user.Password, SHA256.Create());
-            return _context.Users.FirstOrDefault(u => (u.Username == user.Username) && (u.Password == u.Password));
+            return _context.Users.FirstOrDefault(u => (u.Username == user.Username) && (u.Password == pass));
         }
 
 
-        public User? RefreshUserInfo(User user)
+        public User RefreshUserInfo(User user)
         {
             if (!_context.Users.Any(u => u.Id.Equals(user.Id))) return null;
 
@@ -46,7 +46,7 @@ namespace RestWithASPNETDarlan.Repository
             }
             return result;
         }
-        public User? ValidateCredentials(string userName)
+        public User ValidateCredentials(string userName)
         {
             return _context.Users.SingleOrDefault(u => u.Username == userName);
         }
@@ -68,6 +68,14 @@ namespace RestWithASPNETDarlan.Repository
             return builder.ToString();
         }
 
+        public bool RevokeToken(string userName)
+        {
+            var user = _context.Users.SingleOrDefault(u => (u.Username == userName));
+            if (user is null) return false;
+            user.RefreshToken = null;
+            _context.SaveChanges();
+            return true;
 
+        }
     }
 }
