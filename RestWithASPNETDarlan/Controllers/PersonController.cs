@@ -94,5 +94,18 @@ namespace RestWithASPNETDarlan.Controllers
             return base.NoContent();
         }
 
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Patch(long id)
+        {
+
+            PersonVO person = _personBusiness.Disabled(id);
+            return base.Ok(person);
+        }
     }
 }

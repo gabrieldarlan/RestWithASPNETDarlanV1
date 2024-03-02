@@ -9,6 +9,7 @@ namespace RestWithASPNETDarlan.Business
         PersonVO Update(PersonVO person);
         PersonVO FindById(long id);
         List<PersonVO> FindAll();
+        PersonVO Disabled(long id);
         void Delete(long id);
     }
 }

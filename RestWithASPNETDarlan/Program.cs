@@ -16,8 +16,10 @@ using RestWithASPNETDarlan.Hypermedias.Filters;
 using RestWithASPNETDarlan.Model.Context;
 using RestWithASPNETDarlan.Repository;
 using RestWithASPNETDarlan.Repository.Generic;
+using RestWithASPNETDarlan.Repository.Implementation;
 using RestWithASPNETDarlan.Services;
 using RestWithASPNETDarlan.Services.Implementations;
+using RestWithASPNETUdemy.Repository;
 using Serilog;
 using System.Text;
 
@@ -133,6 +135,7 @@ builder.Services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();

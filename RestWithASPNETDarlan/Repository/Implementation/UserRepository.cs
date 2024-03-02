@@ -1,11 +1,11 @@
 ﻿using RestWithASPNETDarlan.Data.VO;
 using RestWithASPNETDarlan.Model;
 using RestWithASPNETDarlan.Model.Context;
-using System.Data;
+using RestWithASPNETDarlan.Repository;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace RestWithASPNETDarlan.Repository
+namespace RestWithASPNETUdemy.Repository
 {
     public class UserRepository : IUserRepository
     {
@@ -16,18 +16,29 @@ namespace RestWithASPNETDarlan.Repository
             _context = context;
         }
 
-        public User ValidateCredentials(UserVO user)
+        public User? ValidateCredentials(UserVO user)
         {
-
             var pass = ComputeHash(user.Password, SHA256.Create());
             return _context.Users.FirstOrDefault(u => (u.Username == user.Username) && (u.Password == pass));
         }
 
+        public User? ValidateCredentials(string userName)
+        {
+            return _context.Users.SingleOrDefault(u => (u.Username == userName));
+        }
 
-        public User RefreshUserInfo(User user)
+        public bool RevokeToken(string userName)
+        {
+            var user = _context.Users.SingleOrDefault(u => (u.Username == userName));
+            if (user is null) return false;
+            user.RefreshToken = null;
+            _context.SaveChanges();
+            return true;
+        }
+
+        public User? RefreshUserInfo(User user)
         {
             if (!_context.Users.Any(u => u.Id.Equals(user.Id))) return null;
-
 
             var result = _context.Users.SingleOrDefault(p => p.Id.Equals(user.Id));
             if (result != null)
@@ -40,17 +51,11 @@ namespace RestWithASPNETDarlan.Repository
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
             }
             return result;
         }
-        public User ValidateCredentials(string userName)
-        {
-            return _context.Users.SingleOrDefault(u => u.Username == userName);
-        }
-
 
         private string ComputeHash(string input, HashAlgorithm algorithm)
         {
@@ -63,19 +68,8 @@ namespace RestWithASPNETDarlan.Repository
             {
                 builder.Append(item.ToString("x2"));
             }
-
-
             return builder.ToString();
         }
 
-        public bool RevokeToken(string userName)
-        {
-            var user = _context.Users.SingleOrDefault(u => (u.Username == userName));
-            if (user is null) return false;
-            user.RefreshToken = null;
-            _context.SaveChanges();
-            return true;
-
-        }
     }
 }

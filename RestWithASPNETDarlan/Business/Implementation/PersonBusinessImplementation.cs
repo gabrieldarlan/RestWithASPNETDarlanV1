@@ -1,16 +1,16 @@
 ﻿using RestWithASPNETDarlan.Data.Converter.Implementations;
 using RestWithASPNETDarlan.Data.VO;
 using RestWithASPNETDarlan.Model;
-using RestWithASPNETDarlan.Repository.Generic;
+using RestWithASPNETDarlan.Repository;
 
 namespace RestWithASPNETDarlan.Business.Implementation
 {
     public class PersonBusinessImplementation : IPersonBusiness
     {
-        private readonly IRepository<Person> _repository;
+        private readonly IPersonRepository _repository;
         private readonly PersonConverter _converter;
 
-        public PersonBusinessImplementation(IRepository<Person> repository)
+        public PersonBusinessImplementation(IPersonRepository repository)
         {
             _repository = repository;
             _converter = new PersonConverter();
@@ -45,6 +45,12 @@ namespace RestWithASPNETDarlan.Business.Implementation
         {
             _repository.Delete(id);
 
+        }
+
+        public PersonVO Disabled(long id)
+        {
+            var personEntity=_repository.Disabled(id);
+            return _converter.Parse(personEntity);
         }
     }
 }
